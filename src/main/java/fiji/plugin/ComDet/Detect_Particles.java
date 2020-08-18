@@ -223,7 +223,8 @@ public class Detect_Particles implements PlugIn {
 		IJ.showStatus("Finding particles...done.");
 		if(cd.ptable.getCounter()<1)
 		{
-			IJ.error("No particles found!");
+			showTableNoParticles();
+			return;
 		}
 		else
 		{
@@ -809,6 +810,41 @@ public class Detect_Particles implements PlugIn {
 			}
 		}//if(!cddlg.bColocalization)
 	
+	}
+	
+	void showTableNoParticles()
+	{			
+			SummaryRT = new ResultsTable();
+	        SummaryRT.incrementCounter();
+	        SummaryRT.addValue("Channel", 1);
+	        SummaryRT.addValue("Slice", 1);
+	        SummaryRT.addValue("Frame", 1);
+	        SummaryRT.addValue("Number_of_Particles", 0);	        		
+	        SummaryRT.show("Summary");
+	        
+
+			cd.ptable_lock.lock();
+			cd.ptable.incrementCounter();									
+			cd.ptable.addValue("Abs_frame", 0);
+			cd.ptable.addValue("X_(px)",0);	
+			cd.ptable.addValue("Y_(px)",0);
+			//ptable.addValue("Frame_Number", nFrame+1);
+			cd.ptable.addValue("Channel", 0);
+			cd.ptable.addValue("Slice", 0);
+			cd.ptable.addValue("Frame", 0);
+			cd.ptable.addValue("xMin", 0);
+			cd.ptable.addValue("yMin", 0);
+			cd.ptable.addValue("xMax", 0);
+			cd.ptable.addValue("yMax", 0);
+			cd.ptable.addValue("NArea", 0);
+			cd.ptable.addValue("IntegratedInt", 0);
+			
+			cd.ptable_lock.unlock();
+			
+	        //Show Results table with coordinates
+	            
+			cd.ptable.show("Results");
+
 	}
 	
 	/**show summary and results tables**/
